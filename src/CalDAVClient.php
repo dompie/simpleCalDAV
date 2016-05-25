@@ -10,12 +10,14 @@
  * @package simpleCalDAV
  */
 
-require_once('CalDAVCalendar.php');
-require_once('include/XMLDocument.php');
+namespace SimpleCalDAV;
 
+use SimpleCalDAV\CalDAVCalendar;
+use SimpleCalDAV\Lib\XMLDocument;
 
 
 class CalDAVClient {
+    
   /**
   * Server, username, password, calendar
   *
@@ -114,20 +116,20 @@ class CalDAVClient {
           $options['timeout'] : 10;
       $this->ch = curl_init();
       curl_setopt_array($this->ch, array(
-                  CURLOPT_CONNECTTIMEOUT => $this->timeout,
-                  CURLOPT_FAILONERROR => FALSE,
-                  CURLOPT_MAXREDIRS => 2,
-                  CURLOPT_FORBID_REUSE => FALSE,
-                  CURLOPT_RETURNTRANSFER => TRUE,
-                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                  CURLOPT_HTTPAUTH =>
-                  isset($options['auth']) ?  $options['auth'] :
-                  (CURLAUTH_BASIC | CURLAUTH_DIGEST),
-                  CURLOPT_USERAGENT => 'cURL based CalDAV client',
-                  CURLINFO_HEADER_OUT => TRUE,
-                  CURLOPT_HEADER => TRUE,
-                  CURLOPT_SSL_VERIFYPEER => FALSE
-                  ));
+        CURLOPT_CONNECTTIMEOUT => $this->timeout,
+        CURLOPT_FAILONERROR => FALSE,
+        CURLOPT_MAXREDIRS => 2,
+        CURLOPT_FORBID_REUSE => FALSE,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_HTTPAUTH =>
+        isset($options['auth']) ?  $options['auth'] :
+        (CURLAUTH_BASIC | CURLAUTH_DIGEST),
+        CURLOPT_USERAGENT => 'cURL based CalDAV client',
+        CURLINFO_HEADER_OUT => TRUE,
+        CURLOPT_HEADER => TRUE,
+        CURLOPT_SSL_VERIFYPEER => FALSE
+    ));
 
       $this->full_url = $base_url;
       $this->first_url_part = $matches[1];

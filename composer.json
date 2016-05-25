@@ -1,0 +1,26 @@
+{
+    "name": "macrotux/simplecaldav",
+    "description": "A simple php CalDAV-Client library. Connect, create, change, delete... easy to use",
+    "keywords": ["CalDAV", "php", "simple"],
+    "homepage": "https://github.com/MaCroTux/simpleCalDAV",
+    "license": "MIT",
+    "authors": [        
+        { 
+            "name": "Michael Palm", 
+            "email": "palm.michael@gmx.de" 
+        },
+        { 
+            "name": "Javier Feria", 
+            "email": "info@javierferia.com" 
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SimpleCalDAV\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.5.9"
+    }
+}
+

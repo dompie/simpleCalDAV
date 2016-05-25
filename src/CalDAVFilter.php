@@ -22,9 +22,12 @@
  *
  */
 
+namespace SimpleCalDAV;
+
 class CalDAVFilter {
-	private $resourceType;
-	private $mustIncludes = array();
+    
+    private $resourceType;
+    private $mustIncludes = array();
     
     /*
      * @param $type The type of resource you want to get. Has to be either
@@ -35,21 +38,21 @@ class CalDAVFilter {
 		$this->resourceType = $type;
 	}
 	
-	/**
-	 * function mustInclude()
-	 * Specifies that a certin property has to be included. The content of the
+    /**
+     * function mustInclude()
+     * Specifies that a certin property has to be included. The content of the
      * property is irrelevant.
      *
      * Only call this function and mustIncludeMatchSubstr() once per property!
-	 * 
-	 * Examples:
+    * 
+    * Examples:
      * mustInclude("SUMMARY"); specifies that all returned resources have to
      * have the SUMMARY-property.
      * mustInclude("LOCATION "); specifies that all returned resources have to
      * have the LOCATION-property.
-	 * 
-	 * Arguments:
-	 * @param $field The name of the property. For a full list of valid
+    * 
+    * Arguments:
+    * @param $field The name of the property. For a full list of valid
      *               property names see http://www.rfcreader.com/#rfc5545_line3622
      *               Note that the server might not support all of them.
      * @param $inverse Makes the effect inverse: The resource must NOT include
@@ -147,5 +150,3 @@ class CalDAVFilter {
         return $xml;
     }
 }
-
-?>

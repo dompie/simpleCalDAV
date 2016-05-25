@@ -10,6 +10,8 @@
 * @license   http://www.gnu.org/licenses/lgpl-3.0.txt  GNU LGPL version 3 or later
 */
 
+namespace SimpleCalDAV\Lib;
+
 if ( !function_exists('dbg_error_log') ) {
   /**
   * Writes a debug message into the error log using printf syntax.  If the first

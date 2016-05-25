@@ -10,7 +10,9 @@
 *
 */
 
-require_once("XMLElement.php");
+namespace SimpleCalDAV\Lib;
+
+use XMLElement;
 
 /**
 * A class for XML Documents which will contain namespaced XML elements
