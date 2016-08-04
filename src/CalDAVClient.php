@@ -14,6 +14,9 @@ namespace SimpleCalDAV;
 
 use SimpleCalDAV\CalDAVCalendar;
 use SimpleCalDAV\Lib\XMLDocument;
+use SimpleCalDAV\Lib\XMLElement;
+
+require_once('Lib/AWLUtilities.php');
 
 
 class CalDAVClient {

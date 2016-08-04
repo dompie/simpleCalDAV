@@ -2,7 +2,7 @@
     "name": "f1v-developers/simplecaldav",
     "description": "A simple php CalDAV-Client library. Connect, create, change, delete... easy to use",
     "keywords": ["CalDAV", "php", "simple"],
-    "homepage": "https://github.com/MaCroTux/simpleCalDAV",
+    "homepage": "https://github.com/f1v-developers/simpleCalDAV",
     "license": "MIT",
     "authors": [        
         { 
