@@ -1,5 +1,5 @@
 {
-    "name": "macrotux/simplecaldav",
+    "name": "f1v-developers/simplecaldav",
     "description": "A simple php CalDAV-Client library. Connect, create, change, delete... easy to use",
     "keywords": ["CalDAV", "php", "simple"],
     "homepage": "https://github.com/MaCroTux/simpleCalDAV",
@@ -12,6 +12,10 @@
         { 
             "name": "Javier Feria", 
             "email": "info@javierferia.com" 
+        },
+        { 
+            "name": "Fabio Elia", 
+            "email": "fabio@f1v.co" 
         }
     ],
     "autoload": {
