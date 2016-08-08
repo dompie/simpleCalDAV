@@ -13,6 +13,7 @@
  */
 
 namespace SimpleCalDAV;
+use Exception;
 
 class CalDAVException extends Exception {
     
