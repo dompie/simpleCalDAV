@@ -20,6 +20,7 @@
  *   - getEvents()
  *   - getTODOs()
  *   - getCustomReport()
+ *   - getFreeBusyReport()
  *
  * All of those functions - except the last one - are realy easy to use, self-explanatory and are
  * deliverd with a big innitial comment, which explains all needed arguments and the return values.
@@ -410,5 +411,22 @@ class SimpleCalDAVClient {
         foreach($results as $event) $report[] = new CalDAVObject($this->url.$event['href'], $event['data'], $event['etag']);
 
         return $report;
+    }
+    
+    /**
+     * getFreeBusyReport
+     * @param {String} $start
+     * @param {String} $start
+     */
+    function getFreeBusyReport($start, $end) {
+        $xml = <<<XML
+<?xml version="1.0"?>
+<c:free-busy-query xmlns:c="urn:ietf:params:xml:ns:caldav">
+    <c:time-range start="$start" end="$end" />
+</c:free-busy-query>
+XML;    
+        $result = $this->client->DoXMLRequest('REPORT', $xml, $this->url);
+        
+        return trim($this->client->GetResponseBody());
     }
 }
