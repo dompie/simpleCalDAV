@@ -49,7 +49,7 @@ use SimpleCalDAV\CalDAVFilter;
 use SimpleCalDAV\CalDAVObject;
 
 class SimpleCalDAVClient {
-    
+
     private $client;
     private $url;
 
@@ -76,35 +76,35 @@ class SimpleCalDAVClient {
         if( ! $client->isValidCalDAVServer() )
         {
 
-                if( $client->GetHttpResultCode() == '401' ) // unauthorisized
-                {
-                                throw new CalDAVException('Login failed', $client);
-                }
+            if( $client->GetHttpResultCode() == '401' ) // unauthorisized
+            {
+                throw new CalDAVException('Login failed', $client);
+            }
 
-                elseif( $client->GetHttpResultCode() == '' ) // can't reach server
-                {
-                                throw new CalDAVException('Can\'t reach server', $client);
-                }
+            elseif( $client->GetHttpResultCode() == '' ) // can't reach server
+            {
+                throw new CalDAVException('Can\'t reach server', $client);
+            }
 
-                else throw new CalDAVException('Could\'n find a CalDAV-collection under the url', $client);
+            else throw new CalDAVException('Could\'n find a CalDAV-collection under the url', $client);
         }
 
         // Check for errors
         if( $client->GetHttpResultCode() != '200' ) {
-                if( $client->GetHttpResultCode() == '401' ) // unauthorisized
-                {
-                        throw new CalDAVException('Login failed', $client);
-                }
+            if( $client->GetHttpResultCode() == '401' ) // unauthorisized
+            {
+                throw new CalDAVException('Login failed', $client);
+            }
 
-                elseif( $client->GetHttpResultCode() == '' ) // can't reach server
-                {
-                        throw new CalDAVException('Can\'t reach server', $client);
-                }
+            elseif( $client->GetHttpResultCode() == '' ) // can't reach server
+            {
+                throw new CalDAVException('Can\'t reach server', $client);
+            }
 
-                else // Unknown status
-                {
-                        throw new CalDAVException('Recieved unknown HTTP status while checking the connection after establishing it', $client);
-                }
+            else // Unknown status
+            {
+                throw new CalDAVException('Recieved unknown HTTP status while checking the connection after establishing it', $client);
+            }
         }
 
         $this->client = $client;
@@ -112,7 +112,7 @@ class SimpleCalDAVClient {
 
     /**
      * function findCalendars()
-     * 
+     *
      * Requests a list of all accessible calendars on the server
      *
      * Return value:
@@ -186,15 +186,15 @@ class SimpleCalDAVClient {
         // PUT-request successfull?
         if ( $this->client->GetHttpResultCode() != '201' )
         {
-                if ( $this->client->GetHttpResultCode() == '204' ) // $url.$uid.'.ics' already existed on server
-                {
-                        throw new CalDAVException( $this->url.$uid.'.ics already existed. Entry has been overwritten.', $this->client);
-                }
+            if ( $this->client->GetHttpResultCode() == '204' ) // $url.$uid.'.ics' already existed on server
+            {
+                throw new CalDAVException( $this->url.$uid.'.ics already existed. Entry has been overwritten.', $this->client);
+            }
 
-                else // Unknown status
-                {
-                        throw new CalDAVException('Recieved unknown HTTP status', $this->client);
-                }
+            else // Unknown status
+            {
+                throw new CalDAVException('Recieved unknown HTTP status', $this->client);
+            }
         }
 
         return new CalDAVObject($this->url.$uid.'.ics', $cal, $newEtag);
@@ -224,7 +224,7 @@ class SimpleCalDAVClient {
 
         // Does $href exist?
         $result = $this->client->GetEntryByHref($href);
-        if ( $this->client->GetHttpResultCode() == '200' ); 
+        if ( $this->client->GetHttpResultCode() == '200' );
         else if ( $this->client->GetHttpResultCode() == '404' ) throw new CalDAVException('Can\'t find '.$href.' on the server', $this->client);
         else throw new CalDAVException('Recieved unknown HTTP status', $this->client);
 
@@ -237,7 +237,7 @@ class SimpleCalDAVClient {
         // PUT-request successfull?
         if ( $this->client->GetHttpResultCode() != '204' && $this->client->GetHttpResultCode() != '200' )
         {
-                throw new CalDAVException('Recieved unknown HTTP status', $this->client);
+            throw new CalDAVException('Recieved unknown HTTP status', $this->client);
         }
 
         return new CalDAVObject($href, $new_data, $newEtag);
@@ -274,7 +274,7 @@ class SimpleCalDAVClient {
         // Deletion successfull?
         if ( $this->client->GetHttpResultCode() != '200' and $this->client->GetHttpResultCode() != '204' )
         {
-                throw new CalDAVException('Recieved unknown HTTP status', $this->client);
+            throw new CalDAVException('Recieved unknown HTTP status', $this->client);
         }
     }
 
@@ -303,7 +303,7 @@ class SimpleCalDAVClient {
 
         // Are $start and $end in the correct format?
         if ( ( isset($start) and ! preg_match( '#^\d\d\d\d\d\d\d\dT\d\d\d\d\d\dZ$#', $start, $matches ) )
-          or ( isset($end) and ! preg_match( '#^\d\d\d\d\d\d\d\dT\d\d\d\d\d\dZ$#', $end, $matches ) ) )
+            or ( isset($end) and ! preg_match( '#^\d\d\d\d\d\d\d\dT\d\d\d\d\d\dZ$#', $end, $matches ) ) )
         { trigger_error('$start or $end are in the wrong format. They must have the format yyyymmddThhmmssZ and should be in GMT', E_USER_ERROR); }
 
         // Get it!
@@ -312,7 +312,7 @@ class SimpleCalDAVClient {
         // GET-request successfull?
         if ( $this->client->GetHttpResultCode() != '207' )
         {
-                throw new CalDAVException('Recieved unknown HTTP status', $this->client);
+            throw new CalDAVException('Recieved unknown HTTP status', $this->client);
         }
 
         // Reformat
@@ -350,7 +350,7 @@ class SimpleCalDAVClient {
 
         // Are $start and $end in the correct format?
         if ( ( isset($start) and ! preg_match( '#^\d\d\d\d\d\d\d\dT\d\d\d\d\d\dZ$#', $start, $matches ) )
-          or ( isset($end) and ! preg_match( '#^\d\d\d\d\d\d\d\dT\d\d\d\d\d\dZ$#', $end, $matches ) ) )
+            or ( isset($end) and ! preg_match( '#^\d\d\d\d\d\d\d\dT\d\d\d\d\d\dZ$#', $end, $matches ) ) )
         { trigger_error('$start or $end are in the wrong format. They must have the format yyyymmddThhmmssZ and should be in GMT', E_USER_ERROR); }
 
         // Get it!
@@ -359,7 +359,7 @@ class SimpleCalDAVClient {
         // GET-request successfull?
         if ( $this->client->GetHttpResultCode() != '207' )
         {
-                throw new CalDAVException('Recieved unknown HTTP status', $this->client);
+            throw new CalDAVException('Recieved unknown HTTP status', $this->client);
         }
 
         // Reformat
@@ -371,19 +371,19 @@ class SimpleCalDAVClient {
 
     /**
      * function getCustomReport()
- * Sends a custom request to the server
+     * Sends a custom request to the server
      * (Sends a REPORT-request with a custom <C:filter>-tag)
-     * 
- * You can either write the filterXML yourself or build an CalDAVFilter-object (see CalDAVFilter.php).
- *
+     *
+     * You can either write the filterXML yourself or build an CalDAVFilter-object (see CalDAVFilter.php).
+     *
      * See http://www.rfcreader.com/#rfc4791_line1524 for more information about how to write filters on your own.
-     * 
+     *
      * Arguments:
      * @param $filterXML The stuff, you want to send encapsulated in the <C:filter>-tag.
-     * 
+     *
      * Return value:
      * @return an array of CalDAVObjects (See CalDAVObject.php), representing the found calendar resources.
-     * 
+     *
      * Debugging:
      * @throws CalDAVException
      * For debugging purposes, just sorround everything with try { ... } catch (Exception $e) { echo $e->__toString(); exit(-1); }
@@ -403,7 +403,7 @@ class SimpleCalDAVClient {
         // GET-request successfull?
         if ( $this->client->GetHttpResultCode() != '207' )
         {
-                throw new CalDAVException('Recieved unknown HTTP status', $this->client);
+            throw new CalDAVException('Recieved unknown HTTP status', $this->client);
         }
 
         // Reformat
@@ -412,7 +412,7 @@ class SimpleCalDAVClient {
 
         return $report;
     }
-    
+
     /**
      * getFreeBusyReport
      * @param {String} $start
@@ -424,9 +424,8 @@ class SimpleCalDAVClient {
 <c:free-busy-query xmlns:c="urn:ietf:params:xml:ns:caldav">
     <c:time-range start="$start" end="$end" />
 </c:free-busy-query>
-XML;    
-        $result = $this->client->DoXMLRequest('REPORT', $xml, $this->url);
-        
+XML;
+        $this->client->DoXMLRequest('REPORT', $xml, $this->url);
         return trim($this->client->GetResponseBody());
     }
 }
