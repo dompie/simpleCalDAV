@@ -25,42 +25,90 @@ class CalDAVClient
      * The calendar-URL we're using
      */
     public $calendar_url;
+
     /**
      * The useragent which is send to the caldav server
      *
      * @var string
      */
     public $user_agent = 'simpleCalDAVclient';
+
+    /**
+     * @var string
+     */
     public $first_url_part;
+
     /**
      * Server, username, password, calendar
      *
      * @var string
      */
     protected $base_url, $user, $pass, $entry, $protocol, $server, $port;
+
     /**
      * The principal-URL we're using
      */
     protected $principal_url;
+
     /**
      * The calendar-home-set we're using
+     * @var mixed (don't know)
      */
     protected $calendar_home_set;
+
     /**
      * The calendar_urls we have discovered
      */
     protected $calendar_urls;
+
+    /**
+     * @var array
+     */
     protected $headers = array();
+
+    /**
+     * @var string
+     */
     protected $body = "";
-        protected $requestMethod = "GET";  // for debugging http headers sent
+
+    /**
+     * @var string
+     */
+    protected $requestMethod = "GET";  // for debugging http headers sent
+
+    /**
+     * @var string
+     */
     protected $httpRequest = "";   // for debugging xml sent
+
+    /**
+     * @var string
+     */
     protected $xmlRequest = ""; // http headers received
+
+    /**
+     * @var string
+     */
     protected $httpResponse = "";  // xml received
-protected $xmlResponse = "";
+
+    protected $httpResponseHeaders;
+
+    protected $httpResponseBody;
+
+    protected $request_url;
+
+    /**
+     * @var string
+     */
+    protected $xmlResponse = "";
+
+    /**
+     * @var string
+     */
     protected $httpResultCode = ""; // our XML parser object
 
     // Requests timeout
-protected $parser;
+    protected $parser;
 
     // cURL handle
     private $timeout;
@@ -70,6 +118,9 @@ protected $parser;
 
     // First part of the full url
     private $full_url;
+
+    protected $xmlnodes = array();
+    protected $xmltags = array();
 
     /**
      * Constructor
@@ -137,6 +188,7 @@ protected $parser;
      *
      * Can be used to check authentication against server
      *
+     * @return bool
      */
     function isValidCalDAVServer()
     {
@@ -189,8 +241,7 @@ protected $parser;
      * Send a request to the server
      *
      * @param string $url The URL to make the request to
-     *
-     * @return string The content of the response from the server
+     * @return mixed The content of the response from the server
      */
     function DoRequest($url = null)
     {
@@ -270,6 +321,7 @@ protected $parser;
 
     /**
      * Parse response headers
+     * @param string $headers
      */
     function ParseResponseHeaders($headers)
     {
@@ -281,7 +333,7 @@ protected $parser;
     /**
      * Split response into httpResponse and xmlResponse
      *
-     * @param string Response from server
+     * @param string $response Response from server
      */
     function ParseResponse($response)
     {
@@ -312,9 +364,7 @@ protected $parser;
     }
 
     /**
-     * Add a Depth: header.  Valid values are 1 or infinity
-     *
-     * @param int $depth The depth, default to infinity
+     * @param string $user_agent
      */
     function SetUserAgent($user_agent = null)
     {
@@ -325,7 +375,7 @@ protected $parser;
     /**
      * Output http request headers
      *
-     * @return HTTP headers
+     * @return string
      */
     function GetHttpRequest()
     {
@@ -447,6 +497,7 @@ protected $parser;
      * Get the HEAD of a single item from the server.
      *
      * @param string $url The URL to HEAD
+     * @return string
      */
     function DoHEADRequest($url)
     {
@@ -479,6 +530,7 @@ protected $parser;
      * Get/Set the calendar-home-set URL
      *
      * @param $urls array of string The calendar URLs to set
+     * @return string
      */
     function CalendarUrls($urls = null)
     {
@@ -494,6 +546,7 @@ protected $parser;
      *
      * @param string $tagname The tag name of the resourcetype to find the href for
      * @param integer $which Which instance of the tag should we use
+     * @return string|null
      */
     function HrefForResourcetype($tagname, $i = 0)
     {
@@ -510,6 +563,10 @@ protected $parser;
         return null;
     }
 
+    /**
+     * @param bool $recursed
+     * @return array
+     */
     function FindCalendars($recursed = false)
     {
         if (!isset($this->calendar_home_set[0])) {
@@ -529,9 +586,8 @@ protected $parser;
     }
 
     /**
-     * Attack the given URL in an attempt to find the calendar-home-url of the current principal
-     *
-     * @param string $url The URL to find the calendar-home-set from
+     * @param bool $recursed
+     * @return array|null
      */
     function FindCalendarHome($recursed = false)
     {
@@ -563,6 +619,7 @@ protected $parser;
      * Attack the given URL in an attempt to find a principal URL
      *
      * @param string $url The URL to find the principal-URL from
+     * @return string|null
      */
     function FindPrincipal($url = null)
     {
@@ -586,6 +643,7 @@ protected $parser;
      * Get a single item from the server.
      *
      * @param string $url The URL to PROPFIND on
+     * @return mixed (don't know)
      */
     function DoPROPFINDRequest($url, $props, $depth = 0)
     {
@@ -617,7 +675,7 @@ protected $parser;
     /**
      * Output xml response
      *
-     * @return raw xml
+     * @return mixed (don't know) raw xml
      */
     function GetXmlResponse()
     {
@@ -681,12 +739,15 @@ protected $parser;
     /**
      * Get/Set the calendar-home-set URL
      *
-     * @param $url array of string The calendar-home-set URLs to set
+     * @param array $urls of string The calendar-home-set URLs to set
+     * @return array
      */
     function CalendarHomeSet($urls = null)
     {
         if (isset($urls)) {
-            if (!is_array($urls)) $urls = array($urls);
+            if (!is_array($urls)) {
+                $urls = array($urls);
+            }
             $this->calendar_home_set = $urls;
         }
         return $this->calendar_home_set;
@@ -694,6 +755,7 @@ protected $parser;
 
     /**
      * Get calendar info after a PROPFIND
+     * @return array
      */
     function parse_calendar_info()
     {
@@ -756,6 +818,7 @@ protected $parser;
      * Return the <prop> ... </prop> of a propstat where the status is OK
      *
      * @param string $nodenum The node number in the xmlnodes which is the href
+     * @return array|null
      */
     function GetOKProps($nodenum)
     {
@@ -783,6 +846,7 @@ protected $parser;
 
     /**
      * Converts a RGBA hexadecimal string (#rrggbbXX) to RGB
+     * @return string
      */
     private function _rgba2rgb($s)
     {
@@ -796,6 +860,7 @@ protected $parser;
 
     /**
      * Do a PROPFIND on a calendar and retrieve its information
+     * @return array
      */
     function GetCalendarDetailsByURL($url)
     {
@@ -818,6 +883,7 @@ protected $parser;
 
     /**
      * Find the calendars, from the calendar_home_set
+     * @return CalDAVCalendar
      */
     function GetCalendarDetails($url = null)
     {
@@ -856,10 +922,14 @@ protected $parser;
 
     /**
      * Get all etags for a calendar
+     * @param string $url
+     * @return array
      */
     function GetCollectionETags($url = null)
     {
-        if (isset($url)) $this->SetCalendar($url);
+        if (isset($url)) {
+            $this->SetCalendar($url);
+        }
 
         $this->DoPROPFINDRequest($this->calendar_url, array('getetag'), 1);
 
@@ -867,7 +937,9 @@ protected $parser;
         if (isset($this->xmltags['DAV::getetag'])) {
             foreach ($this->xmltags['DAV::getetag'] AS $k => $v) {
                 $href = $this->HrefForProp('DAV::getetag', $k);
-                if (isset($href) && isset($this->xmlnodes[$v]['value'])) $etags[$href] = $this->xmlnodes[$v]['value'];
+                if (isset($href) && isset($this->xmlnodes[$v]['value'])) {
+                    $etags[$href] = $this->xmlnodes[$v]['value'];
+                }
             }
         }
 
@@ -876,11 +948,15 @@ protected $parser;
 
     /**
      * Get a bunch of events for a calendar with a calendar-multiget report
+     * @param array $event_hrefs
+     * @param string $url
+     * @return array
      */
     function CalendarMultiget($event_hrefs, $url = null)
     {
-
-        if (isset($url)) $this->SetCalendar($url);
+        if (isset($url)){
+            $this->SetCalendar($url);
+        }
 
         $hrefs = '';
         foreach ($event_hrefs AS $k => $href) {
@@ -931,8 +1007,8 @@ EOXML;
      * part, where the 'href' is relative to the calendar and the event contains the
      * definition of the event in iCalendar format.
      *
-     * @param timestamp $start The start time for the period
-     * @param timestamp $finish The finish time for the period
+     * @param string $start The start time for the period
+     * @param string $finish The finish time for the period
      * @param string $relative_url The URL relative to the base_url specified when the calendar was opened.  Default null.
      *
      * @return array An array of the relative URLs, etags, and events, returned from DoCalendarQuery() @see DoCalendarQuery()
@@ -1026,8 +1102,8 @@ EOXML;
      * part, where the 'href' is relative to the calendar and the event contains the
      * definition of the event in iCalendar format.
      *
-     * @param timestamp $start The start time for the period
-     * @param timestamp $finish The finish time for the period
+     * @param string $start The start time for the period
+     * @param string $finish The finish time for the period
      * @param boolean $completed Whether to include completed tasks
      * @param boolean $cancelled Whether to include cancelled tasks
      * @param string $relative_url The URL relative to the base_url specified when the calendar was opened.  Default ''.
@@ -1156,6 +1232,7 @@ EOFILTER;
      * Get a single item from the server.
      *
      * @param string $url The URL to GET
+     * @return string
      */
     function DoGETRequest($url)
     {
@@ -1177,9 +1254,10 @@ EOFILTER;
     /**
      * Issues a PROPPATCH on a resource
      *
-     * @param string    XML request
-     * @param string    URL
-     * @return          TRUE on success, FALSE otherwise
+     * @param string $xml_text XML request
+     * @param string $url URL
+     *
+     * @return bool TRUE on success, FALSE otherwise
      */
     function DoPROPPATCH($xml_text, $url)
     {
@@ -1221,11 +1299,11 @@ EOFILTER;
     /**
      * Send an XML request to the server (e.g. PROPFIND, REPORT, MKCALENDAR)
      *
-     * @param string $method The method (PROPFIND, REPORT, etc) to use with the request
+     * @param string $request_method The method (PROPFIND, REPORT, etc) to use with the request
      * @param string $xml The XML to send along with the request
      * @param string $url The URL to make the request to
      *
-     * @return array An array of the allowed methods
+     * @return mixed (Probably) an array of the allowed methods
      */
     function DoXMLRequest($request_method, $xml, $url = null)
     {
@@ -1238,9 +1316,10 @@ EOFILTER;
     /**
      * Queries server using a principal-property search
      *
-     * @param string    XML request
-     * @param string    URL
-     * @return          FALSE on error, array with results otherwise
+     * @param string string XML request
+     * @param string string URL
+     *
+     * @return array|string string on error
      */
     function principal_property_search($xml_text, $url)
     {
@@ -1289,7 +1368,7 @@ EOFILTER;
     public function printLastMessages()
     {
         $string = '';
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->preserveWhiteSpace = FALSE;
         $dom->formatOutput = TRUE;
 
@@ -1322,7 +1401,7 @@ EOFILTER;
  * Error handeling functions
  */
 
-$debug = TRUE;
+$debug = false;
 
 function log_message($type, $message)
 {

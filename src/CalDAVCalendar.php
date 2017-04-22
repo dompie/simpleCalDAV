@@ -40,7 +40,7 @@ class CalDAVCalendar
     private $rbg_color;
     private $order;
 
-    function __construct($url, $displayname = null, $ctag = null, $calendar_id = null, $rbg_color = null, $order = null)
+    public function __construct($url, $displayname = null, $ctag = null, $calendar_id = null, $rbg_color = null, $order = null)
     {
         $this->url = $url;
         $this->displayname = $displayname;
@@ -50,73 +50,70 @@ class CalDAVCalendar
         $this->order = $order;
     }
 
-    function __toString()
+    public function __toString()
     {
         return ('(URL: ' . $this->url . '   Ctag: ' . $this->ctag . '   Displayname: ' . $this->displayname . ')' . "\n");
     }
 
     // Getters
 
-    function getURL()
+    public function getURL()
     {
         return $this->url;
     }
 
-    function setURL($url)
+    public function setURL($url)
     {
         $this->url = $url;
     }
 
-    function getDisplayName()
+    public function getDisplayName()
     {
         return $this->displayname;
     }
 
-    function setDisplayName($displayname)
+    public function setDisplayName($displayname)
     {
         $this->displayname = $displayname;
     }
 
-    function getCTag()
+    public function getCTag()
     {
         return $this->ctag;
     }
 
-    function setCtag($ctag)
+    public function setCtag($ctag)
     {
         $this->ctag = $ctag;
     }
 
-
-    // Setters
-
-    function getCalendarID()
+    public  function getCalendarID()
     {
         return $this->calendar_id;
     }
 
-    function setCalendarID($calendar_id)
+    public function setCalendarID($calendar_id)
     {
         $this->calendar_id = $calendar_id;
     }
 
-    function getRBGcolor()
+    public function getRBGcolor()
     {
         return $this->rbg_color;
     }
 
-    function setRBGcolor($rbg_color)
+    public function setRBGcolor($rbg_color)
     {
         $this->rbg_color = $rbg_color;
     }
 
-    function getOrder()
+    public function getOrder()
     {
         return $this->order;
     }
 
-    function setOrder($order)
+    public function setOrder($order)
     {
         $this->order = $order;
     }
-} // 
+}
