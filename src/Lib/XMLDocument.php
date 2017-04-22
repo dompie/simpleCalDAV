@@ -185,7 +185,7 @@ class XMLDocument {
     if ( $namespace == null && preg_match('/^(.*):([^:]+)$/', $in_tag, $matches) ) {
       $namespace = $matches[1];
       if ( preg_match('{^[A-Z][A-Z0-9]*$}', $namespace ) ) {
-        throw new Exception("Dodgy looking namespace from '".$in_tag."'!");
+        throw new \Exception("Dodgy looking namespace from '".$in_tag."'!");
       }
       $tag = $matches[2];
     }

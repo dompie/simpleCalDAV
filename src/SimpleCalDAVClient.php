@@ -124,7 +124,7 @@ class SimpleCalDAVClient {
      */
     function findCalendars()
     {
-        if(!isset($this->client)) throw new Exception('No connection. Try connect().');
+        if(!isset($this->client)) throw new \Exception('No connection. Try connect().');
 
         return $this->client->FindCalendars(true);
     }
@@ -140,7 +140,7 @@ class SimpleCalDAVClient {
      */
     function setCalendar ( CalDAVCalendar $calendar )
     {
-        if(!isset($this->client)) throw new Exception('No connection. Try connect().');
+        if(!isset($this->client)) throw new \Exception('No connection. Try connect().');
 
         $this->client->SetCalendar($this->client->first_url_part.$calendar->getURL());
 
@@ -167,11 +167,11 @@ class SimpleCalDAVClient {
     function create ( $cal )
     {
         // Connection and calendar set?
-        if(!isset($this->client)) throw new Exception('No connection. Try connect().');
-        if(!isset($this->client->calendar_url)) throw new Exception('No calendar selected. Try findCalendars() and setCalendar().');
+        if(!isset($this->client)) throw new \Exception('No connection. Try connect().');
+        if(!isset($this->client->calendar_url)) throw new \Exception('No calendar selected. Try findCalendars() and setCalendar().');
 
         // Parse $cal for UID
-        if (! preg_match( '#^UID:(.*?)\r?\n?$#m', $cal, $matches ) ) { throw new Exception('Can\'t find UID in $cal'); }
+        if (! preg_match( '#^UID:(.*?)\r?\n?$#m', $cal, $matches ) ) { throw new \Exception('Can\'t find UID in $cal'); }
         else { $uid = $matches[1]; }
 
         // Does $this->url.$uid.'.ics' already exist?
@@ -219,8 +219,8 @@ class SimpleCalDAVClient {
     function change ( $href, $new_data, $etag )
     {
         // Connection and calendar set?
-        if(!isset($this->client)) throw new Exception('No connection. Try connect().');
-        if(!isset($this->client->calendar_url)) throw new Exception('No calendar selected. Try findCalendars() and setCalendar().');
+        if(!isset($this->client)) throw new \Exception('No connection. Try connect().');
+        if(!isset($this->client->calendar_url)) throw new \Exception('No calendar selected. Try findCalendars() and setCalendar().');
 
         // Does $href exist?
         $result = $this->client->GetEntryByHref($href);
@@ -258,8 +258,8 @@ class SimpleCalDAVClient {
     function delete ( $href, $etag )
     {
         // Connection and calendar set?
-        if(!isset($this->client)) throw new Exception('No connection. Try connect().');
-        if(!isset($this->client->calendar_url)) throw new Exception('No calendar selected. Try findCalendars() and setCalendar().');
+        if(!isset($this->client)) throw new \Exception('No connection. Try connect().');
+        if(!isset($this->client->calendar_url)) throw new \Exception('No calendar selected. Try findCalendars() and setCalendar().');
 
         // Does $href exist?
         $result = $this->client->GetEntryByHref($href);
@@ -298,8 +298,8 @@ class SimpleCalDAVClient {
     function getEvents ( $start = null, $end = null )
     {
         // Connection and calendar set?
-        if(!isset($this->client)) throw new Exception('No connection. Try connect().');
-        if(!isset($this->client->calendar_url)) throw new Exception('No calendar selected. Try findCalendars() and setCalendar().');
+        if(!isset($this->client)) throw new \Exception('No connection. Try connect().');
+        if(!isset($this->client->calendar_url)) throw new \Exception('No calendar selected. Try findCalendars() and setCalendar().');
 
         // Are $start and $end in the correct format?
         if ( ( isset($start) and ! preg_match( '#^\d\d\d\d\d\d\d\dT\d\d\d\d\d\dZ$#', $start, $matches ) )
@@ -345,8 +345,8 @@ class SimpleCalDAVClient {
     function getTODOs ( $start = null, $end = null, $completed = null, $cancelled = null )
     {
         // Connection and calendar set?
-        if(!isset($this->client)) throw new Exception('No connection. Try connect().');
-        if(!isset($this->client->calendar_url)) throw new Exception('No calendar selected. Try findCalendars() and setCalendar().');
+        if(!isset($this->client)) throw new \Exception('No connection. Try connect().');
+        if(!isset($this->client->calendar_url)) throw new \Exception('No calendar selected. Try findCalendars() and setCalendar().');
 
         // Are $start and $end in the correct format?
         if ( ( isset($start) and ! preg_match( '#^\d\d\d\d\d\d\d\dT\d\d\d\d\d\dZ$#', $start, $matches ) )
@@ -391,8 +391,8 @@ class SimpleCalDAVClient {
     function getCustomReport ( $filterXML )
     {
         // Connection and calendar set?
-        if(!isset($this->client)) throw new Exception('No connection. Try connect().');
-        if(!isset($this->client->calendar_url)) throw new Exception('No calendar selected. Try findCalendars() and setCalendar().');
+        if(!isset($this->client)) throw new \Exception('No connection. Try connect().');
+        if(!isset($this->client->calendar_url)) throw new \Exception('No calendar selected. Try findCalendars() and setCalendar().');
 
         // Get report!
         $this->client->SetDepth('1');
