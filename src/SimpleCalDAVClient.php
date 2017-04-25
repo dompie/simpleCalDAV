@@ -57,6 +57,11 @@ class SimpleCalDAVClient
     private $url;
 
     /**
+     * @var array
+     */
+    private $constructorParams = [];
+
+    /**
      * function connect()
      * Connects to a CalDAV-Server.
      *
@@ -72,6 +77,7 @@ class SimpleCalDAVClient
     function connect($url, $user, $pass)
     {
 
+        $this->constructorParams = [$url, $user, $pass];
         //  Connect to CalDAV-Server and log in
         $client = new CalDAVClient($url, $user, $pass);
 
@@ -102,6 +108,10 @@ class SimpleCalDAVClient
         }
 
         $this->client = $client;
+    }
+
+    public function __clone() {
+        $this->client = new CalDAVClient($this->constructorParams[0], $this->constructorParams[1], $this->constructorParams[2]);
     }
 
     /**
